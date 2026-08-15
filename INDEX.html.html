@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEON MED // Personal Medical Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+
+:root{
+  --pink:#ff5fc8;
+  --pink2:#ff9be4;
+  --cyan:#63e9ff;
+  --purple:#a985ff;
+  --bg:#080711;
+  --panel:rgba(20,16,36,.78);
+  --panel2:rgba(35,24,55,.72);
+  --text:#f8efff;
+  --muted:#bcaeca;
+  --line:rgba(255,120,220,.22);
+  --shadow:0 0 35px rgba(255,65,190,.12);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--text);
+  font-family:"Noto Sans TC",sans-serif;
+  background:
+    radial-gradient(circle at 75% 12%,rgba(255,80,200,.18),transparent 28%),
+    radial-gradient(circle at 15% 80%,rgba(75,220,255,.10),transparent 25%),
+    linear-gradient(135deg,#07060d,#0c0916 50%,#100914);
+  overflow-x:hidden;
+}
+body:before{
+  content:"";
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.014) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,.7),transparent);
+}
+body:after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:10;
+  background:linear-gradient(transparent 50%,rgba(255,90,210,.018) 50%);
+  background-size:100% 4px;opacity:.25;
+}
+header,main{position:relative;z-index:1}
+header{
+  width:min(1180px,92%);
+  margin:28px auto 18px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:20px;
+}
+.logo{
+  display:flex;align-items:center;gap:13px;
+  font-family:Orbitron,sans-serif;letter-spacing:2px;
+}
+.logo-mark{
+  width:43px;height:43px;border:1px solid var(--pink);
+  display:grid;place-items:center;
+  color:var(--pink);box-shadow:0 0 18px rgba(255,95,200,.28);
+  transform:skew(-8deg);
+}
+.logo small{display:block;color:var(--muted);font:10px Orbitron;letter-spacing:3px;margin-top:3px}
+.controls{display:flex;gap:10px;align-items:center}
+select,button{
+  border:1px solid var(--line);background:rgba(19,14,32,.82);
+  color:var(--text);padding:10px 13px;border-radius:8px;
+  font:500 13px "Noto Sans TC",sans-serif;outline:none;
+}
+select:focus,button:hover{border-color:var(--pink);box-shadow:0 0 15px rgba(255,95,200,.16)}
+button{cursor:pointer}
+.hero{
+  width:min(1180px,92%);margin:0 auto 22px;
+  min-height:260px;display:grid;grid-template-columns:1.35fr .65fr;
+  gap:18px;align-items:stretch;
+}
+.card{
+  background:linear-gradient(145deg,rgba(26,19,43,.84),rgba(12,10,22,.78));
+  border:1px solid var(--line);border-radius:16px;
+  box-shadow:var(--shadow);backdrop-filter:blur(14px);
+  position:relative;overflow:hidden;
+}
+.hero-main{padding:34px}
+.kicker{font:11px Orbitron;color:var(--cyan);letter-spacing:3px;margin-bottom:15px}
+h1{
+  margin:0;font:600 clamp(31px,5vw,61px)/1.02 Orbitron,sans-serif;
+  letter-spacing:-1px;text-shadow:0 0 22px rgba(255,95,200,.2);
+}
+h1 span{color:var(--pink)}
+.hero p{color:var(--muted);max-width:650px;line-height:1.8;margin:20px 0 0}
+.glow-line{height:1px;width:70%;margin-top:26px;background:linear-gradient(90deg,var(--pink),transparent)}
+.hero-side{padding:25px;display:flex;flex-direction:column;justify-content:space-between}
+.avatar{
+  width:92px;height:92px;border-radius:50%;margin-bottom:18px;
+  border:1px solid rgba(255,155,228,.7);
+  box-shadow:0 0 28px rgba(255,95,200,.25),inset 0 0 20px rgba(255,95,200,.12);
+  display:grid;place-items:center;color:var(--pink2);
+  font:25px Orbitron;background:
+  radial-gradient(circle at 35% 30%,rgba(255,155,228,.22),transparent 35%),
+  linear-gradient(145deg,#21152e,#0c0a14);
+}
+.status{display:flex;align-items:center;gap:8px;color:#cfeaff;font-size:13px}
+.dot{width:8px;height:8px;border-radius:50%;background:#63ffbe;box-shadow:0 0 12px #63ffbe}
+.main-grid{
+  width:min(1180px,92%);margin:auto;
+  display:grid;grid-template-columns:240px 1fr;gap:18px;
+}
+nav{padding:12px;height:max-content;position:sticky;top:18px}
+nav button{
+  width:100%;text-align:left;margin:3px 0;background:transparent;
+  border-color:transparent;color:var(--muted);
+}
+nav button.active,nav button:hover{color:white;background:rgba(255,95,200,.08);border-color:var(--line)}
+nav .nav-title{font:10px Orbitron;color:#796b88;letter-spacing:2px;padding:10px 12px}
+.content{display:flex;flex-direction:column;gap:18px}
+.section{padding:25px}
+.section-title{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:15px;margin-bottom:18px
+}
+.section-title h2{margin:0;font:500 20px Orbitron;letter-spacing:1px}
+.section-title span{font-size:11px;color:var(--cyan);font-family:Orbitron}
+.fields{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+.field{
+  padding:15px;border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;background:rgba(255,255,255,.025);
+}
+.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:7px}
+.field input,.field textarea{
+  width:100%;border:0;outline:0;background:transparent;color:var(--text);
+  font:15px "Noto Sans TC",sans-serif;resize:vertical;
+}
+.field textarea{min-height:70px}
+.full{grid-column:1/-1}
+.timeline{display:grid;gap:10px}
+.item{
+  display:grid;grid-template-columns:110px 1fr auto;gap:16px;align-items:center;
+  padding:15px;border-left:2px solid var(--pink);
+  background:rgba(255,95,200,.035)
+}
+.item strong{font-size:14px}.item small{color:var(--muted)}
+.tag{font-size:10px;color:var(--cyan);border:1px solid rgba(99,233,255,.25);padding:5px 8px;border-radius:20px}
+.actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+.primary{background:linear-gradient(90deg,#b8459b,#7655c8);border:0}
+footer{
+  width:min(1180px,92%);margin:25px auto 40px;text-align:center;
+  color:#766b80;font-size:11px;line-height:1.7
+}
+.glitch{animation:pulse 4s ease-in-out infinite}
+@keyframes pulse{0%,100%{text-shadow:0 0 15px rgba(255,95,200,.15)}50%{text-shadow:0 0 27px rgba(255,95,200,.4)}}
+@media(max-width:800px){
+  .hero{grid-template-columns:1fr}.main-grid{grid-template-columns:1fr}
+  nav{position:static;display:grid;grid-template-columns:repeat(2,1fr)}
+  nav .nav-title{grid-column:1/-1}.fields{grid-template-columns:1fr}
+  .item{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">NM</div>
+    <div>
+      NEON MED
+      <small>PERSONAL MEDICAL ARCHIVE</small>
+    </div>
+  </div>
+  <div class="controls">
+    <select id="language" aria-label="Language">
+      <option value="zh">繁體中文</option>
+      <option value="en">English</option>
+      <option value="ja">日本語</option>
+      <option value="ko">한국어</option>
+      <option value="vi">Tiếng Việt</option>
+    </select>
+    <button onclick="saveData()" id="saveBtn">儲存資料</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="card hero-main">
+    <div class="kicker">PERSONAL // MEDICAL // DATA</div>
+    <h1 class="glitch"><span>NEON</span> MEDICAL<br>ARCHIVE</h1>
+    <p id="heroText">你的個人健康資料庫。以低調的霓虹粉與藍紫色打造，保留 Cyberpunk 夜城風格，但讓資訊保持乾淨、容易閱讀。</p>
+    <div class="glow-line"></div>
+  </div>
+  <div class="card hero-side">
+    <div>
+      <div class="avatar">L</div>
+      <div class="kicker" id="profileLabel">PROFILE ID</div>
+      <strong id="profileId">NM-2077-LCY</strong>
+    </div>
+    <div class="status"><i class="dot"></i><span id="statusText">LOCAL SYSTEM // READY</span></div>
+  </div>
+</section>
+
+<div class="main-grid">
+  <nav class="card">
+    <div class="nav-title">DATABASE</div>
+    <button class="active" onclick="scrollToId('personal')" data-nav="personal">01 // 個人資料</button>
+    <button onclick="scrollToId('history')" data-nav="history">02 // 疾病史</button>
+    <button onclick="scrollToId('family')" data-nav="family">03 // 家族史</button>
+    <button onclick="scrollToId('surgery')" data-nav="surgery">04 // 手術史</button>
+    <button onclick="scrollToId('medicine')" data-nav="medicine">05 // 用藥史</button>
+    <button onclick="scrollToId('allergy')" data-nav="allergy">06 // 過敏與疫苗</button>
+    <button onclick="scrollToId('notes')" data-nav="notes">07 // 備註</button>
+  </nav>
+
+  <main class="content">
+    <section class="card section" id="personal">
+      <div class="section-title"><h2 data-title="personal">個人資料</h2><span>01 / IDENTITY</span></div>
+      <div class="fields">
+        <div class="field"><label>姓名 / NAME</label><input id="name" placeholder="輸入姓名"></div>
+        <div class="field"><label>出生日期 / DOB</label><input id="dob" type="date"></div>
+        <div class="field"><label>血型 / BLOOD TYPE</label><input id="blood" placeholder="例如：O+"></div>
+        <div class="field"><label>緊急聯絡人 / EMERGENCY CONTACT</label><input id="emergency" placeholder="姓名與電話"></div>
+      </div>
+    </section>
+
+    <section class="card section" id="history">
+      <div class="section-title"><h2 data-title="history">疾病史</h2><span>02 / MEDICAL HISTORY</span></div>
+      <div class="fields">
+        <div class="field full"><label>既往疾病 / PREVIOUS CONDITIONS</label><textarea id="historyText" placeholder="例如：曾經診斷的疾病、就診年份、重要檢查結果……"></textarea></div>
+      </div>
+    </section>
+
+    <section class="card section" id="family">
+      <div class="section-title"><h2 data-title="family">家族史</h2><span>03 / FAMILY HISTORY</span></div>
+      <div class="fields">
+        <div class="field full"><label>家族疾病 / FAMILY CONDITIONS</label><textarea id="familyText" placeholder="例如：直系親屬曾有的重大疾病或遺傳相關資訊……"></textarea></div>
+      </div>
+    </section>
+
+    <section class="card section" id="surgery">
+      <div class="section-title"><h2 data-title="surgery">手術史</h2><span>04 / PROCEDURES</span></div>
+      <div class="timeline">
+        <div class="item"><input type="text" placeholder="日期" style="background:transparent;border:0;color:white"><div><strong>手術／處置名稱</strong><br><small>醫院、原因、結果或其他重要資訊</small></div><span class="tag">EDIT</span></div>
+        <div class="item"><input type="text" placeholder="日期" style="background:transparent;border:0;color:white"><div><strong>其他醫療處置</strong><br><small>可自行修改或刪除這筆範例</small></div><span class="tag">EDIT</span></div>
+      </div>
+    </section>
+
+    <section class="card section" id="medicine">
+      <div class="section-title"><h2 data-title="medicine">用藥史</h2><span>05 / MEDICATION</span></div>
+      <div class="fields">
+        <div class="field"><label>藥物名稱 / MEDICATION</label><input id="medName" placeholder="藥物名稱"></div>
+        <div class="field"><label>使用方式 / DOSAGE</label><input id="medDose" placeholder="依醫師指示填寫"></div>
+        <div class="field full"><label>補充資訊 / NOTES</label><textarea id="medNotes" placeholder="用途、開始／停止時間、特殊注意事項……"></textarea></div>
+      </div>
+    </section>
+
+    <section class="card section" id="allergy">
+      <div class="section-title"><h2 data-title="allergy">過敏與疫苗</h2><span>06 / SAFETY</span></div>
+      <div class="fields">
+        <div class="field"><label>過敏 / ALLERGIES</label><textarea id="allergyText" placeholder="藥物、食物或其他過敏資訊"></textarea></div>
+        <div class="field"><label>疫苗紀錄 / VACCINES</label><textarea id="vaccineText" placeholder="疫苗名稱與接種日期"></textarea></div>
+      </div>
+    </section>
+
+    <section class="card section" id="notes">
+      <div class="section-title"><h2 data-title="notes">其他備註</h2><span>07 / EXTRA DATA</span></div>
+      <div class="fields">
+        <div class="field full"><label>備註 / NOTES</label><textarea id="notesText" placeholder="還有任何你覺得醫師需要知道的重要資訊……"></textarea></div>
+      </div>
+      <div class="actions">
+        <button onclick="clearData()">清除本機資料</button>
+        <button class="primary" onclick="saveData()">儲存到本機</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer>
+  NEON MED is a local-only demo interface. 資料只儲存在目前瀏覽器的 Local Storage；正式醫療用途請使用醫療院所提供的安全系統。
+</footer>
+
+<script>
+const translations = {
+  zh:{hero:"你的個人健康資料庫。以低調的霓虹粉與藍紫色打造，保留 Cyberpunk 夜城風格，但讓資訊保持乾淨、容易閱讀。",
+      save:"儲存資料",nav:["01 // 個人資料","02 // 疾病史","03 // 家族史","04 // 手術史","05 // 用藥史","06 // 過敏與疫苗","07 // 備註"],
+      titles:["個人資料","疾病史","家族史","手術史","用藥史","過敏與疫苗","其他備註"]},
+  en:{hero:"Your personal health archive. A restrained neon pink and blue-purple interface inspired by a futuristic night city, while keeping medical information clean and readable.",
+      save:"Save Data",nav:["01 // Personal","02 // Medical History","03 // Family History","04 // Surgery","05 // Medication","06 // Allergies & Vaccines","07 // Notes"],
+      titles:["Personal Data","Medical History","Family History","Surgery History","Medication History","Allergies & Vaccines","Notes"]},
+  ja:{hero:"あなたの個人健康アーカイブ。ネオンピンクとブルーパープルを使った、未来的で静かなナイトシティ風デザインです。",
+      save:"保存",nav:["01 // 個人情報","02 // 既往歴","03 // 家族歴","04 // 手術歴","05 // 服薬歴","06 // アレルギー・ワクチン","07 // メモ"],
+      titles:["個人情報","既往歴","家族歴","手術歴","服薬歴","アレルギー・ワクチン","メモ"]},
+  ko:{hero:"개인 건강 기록을 위한 아카이브입니다. 네온 핑크와 블루 퍼플을 사용해 미래적인 분위기를 만들면서 정보를 깔끔하게 보여줍니다.",
+      save:"저장",nav:["01 // 개인 정보","02 // 병력","03 // 가족력","04 // 수술력","05 // 복약력","06 // 알레르기·백신","07 // 메모"],
+      titles:["개인 정보","병력","가족력","수술력","복약력","알레르기·백신","메모"]},
+  vi:{hero:"Kho lưu trữ sức khỏe cá nhân với phong cách neon hồng và xanh tím tương lai, nhưng vẫn giữ thông tin rõ ràng và dễ đọc.",
+      save:"Lưu dữ liệu",nav:["01 // Cá nhân","02 // Tiền sử bệnh","03 // Tiền sử gia đình","04 // Phẫu thuật","05 // Thuốc","06 // Dị ứng & Vắc-xin","07 // Ghi chú"],
+      titles:["Thông tin cá nhân","Tiền sử bệnh","Tiền sử gia đình","Tiền sử phẫu thuật","Tiền sử dùng thuốc","Dị ứng & Vắc-xin","Ghi chú"]}
+};
+
+const fields=["name","dob","blood","emergency","historyText","familyText","medName","medDose","medNotes","allergyText","vaccineText","notesText"];
+
+function saveData(){
+  const data={};
+  fields.forEach(id=>data[id]=document.getElementById(id)?.value||"");
+  localStorage.setItem("neonMedData",JSON.stringify(data));
+  const btn=document.getElementById("saveBtn");
+  const old=btn.textContent;
+  btn.textContent=translations[document.getElementById("language").value].save+" ✓";
+  setTimeout(()=>btn.textContent=old,1300);
+}
+function loadData(){
+  const data=JSON.parse(localStorage.getItem("neonMedData")||"{}");
+  fields.forEach(id=>{if(data[id]!==undefined) document.getElementById(id).value=data[id]});
+}
+function clearData(){
+  if(confirm("確定要清除目前瀏覽器儲存的資料嗎？")){
+    localStorage.removeItem("neonMedData");
+    fields.forEach(id=>{const e=document.getElementById(id);if(e)e.value=""});
+  }
+}
+function scrollToId(id){document.getElementById(id).scrollIntoView({behavior:"smooth",block:"start"})}
+
+function setLanguage(lang){
+  const t=translations[lang];
+  document.getElementById("heroText").textContent=t.hero;
+  document.getElementById("saveBtn").textContent=t.save;
+  document.querySelectorAll("[data-nav]").forEach((b,i)=>b.textContent=t.nav[i]);
+  document.querySelectorAll("[data-title]").forEach((e,i)=>e.textContent=t.titles[i]);
+  document.documentElement.lang=lang==="zh"?"zh-Hant":lang;
+  localStorage.setItem("neonMedLang",lang);
+}
+document.getElementById("language").addEventListener("change",e=>setLanguage(e.target.value));
+loadData();
+const savedLang=localStorage.getItem("neonMedLang")||"zh";
+document.getElementById("language").value=savedLang;
+setLanguage(savedLang);
+</script>
+</body>
+</html>
